@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>اسماء الساعات العربية</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #f5e8c7;
+      margin: 0;
+      font-family: 'Amiri', sans-serif;
+      color: #2c3e50;
+    }
+    h1 {
+      font-size: 24px;
+      font-weight: bold;
+      color: #2c3e50;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .clock {
+      width: 40vw;
+      max-width: 500px;
+      aspect-ratio: 1/1;
+      border: 18px solid #2c3e50;
+      border-radius: 50%;
+      position: relative;
+      padding: 18px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(135deg, #ffffff, #e8ecef);
+    }
+    .clock-face {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    .tick {
+      position: absolute;
+      width: 2px;
+      height: 12px;
+      background: #2c3e50;
+      top: 5%;
+      left: 50%;
+      transform-origin: 50% 95%;
+    }
+    .hand {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform-origin: 100% 50%;
+      transform: rotate(90deg);
+      background: #2c3e50;
+      border-radius: 4px;
+      transition: transform 0.05s cubic-bezier(0.1, 2.7, 0.58, 1);
+    }
+    .hour-hand {
+      width: 35%;
+      height: 10px;
+      margin-left: -35%;
+      background: #d4a017;
+    }
+    .minute-hand {
+      width: 45%;
+      height: 8px;
+      margin-left: -45%;
+    }
+    .second-hand {
+      width: 48%;
+      height: 4px;
+      background: #e74c3c;
+      margin-left: -48%;
+    }
+    .center-dot {
+      width: 14px;
+      height: 14px;
+      background: #d4a017;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-50%, -50%) scale(1.1); }
+    }
+    .number {
+      position: absolute;
+      font-size: 16px;
+      text-align: center;
+      transform: translate(-50%, -50%);
+      color: #2c3e50;
+      width: 70px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .number0 { top: 20%; left: 50%; } /* AM: 00:00 (الفحمة) */
+    .number12 { top: 20%; left: 50%; } /* PM: 12:00 (الهاجِرة) */
+    .number1 { top: 25%; left: 77%; }
+    .number2 { top: 35%; left: 87%; }
+    .number3 { top: 50%; left: 92%; }
+    .number4 { top: 65%; left: 87%; }
+    .number5 { top: 80%; left: 77%; }
+    .number6 { top: 90%; left: 50%; }
+    .number7 { top: 80%; left: 23%; }
+    .number8 { top: 65%; left: 13%; }
+    .number9 { top: 50%; left: 8%; }
+    .number10 { top: 35%; left: 13%; }
+    .number11 { top: 25%; left: 23%; }
+    .controls {
+      margin-top: 20px;
+      padding: 15px;
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .controls label {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .controls input[type="range"] {
+      width: 250px;
+      accent-color: #d4a017;
+      cursor: pointer;
+    }
+    .controls input[type="range"]:hover {
+      opacity: 0.8;
+    }
+    .controls button {
+      padding: 8px 16px;
+      font-size: 16px;
+      background: #d4a017;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .controls button:hover {
+      background: #b8860b;
+    }
+    .time-display {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    footer {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #2c3e50;
+      text-align: center;
+      padding-bottom: 20px;
+    }
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 20px;
+      }
+      .clock {
+        width: 80vw;
+        padding: 12px;
+        border-width: 12px;
+      }
+      .controls {
+        width: 80%;
+        padding: 10px;
+      }
+      .controls input[type="range"] {
+        width: 100%;
+      }
+      .number {
+        font-size: 14px;
+        width: 60px;
+      }
+      footer {
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>اسماء الساعات العربية</h1>
+  <div class="clock">
+    <div class="clock-face" id="clock-face">
+      <div class="tick" style="transform: rotate(0deg);"></div>
+      <div class="tick" style="transform: rotate(30deg);"></div>
+      <div class="tick" style="transform: rotate(60deg);"></div>
+      <div class="tick" style="transform: rotate(90deg);"></div>
+      <div class="tick" style="transform: rotate(120deg);"></div>
+      <div class="tick" style="transform: rotate(150deg);"></div>
+      <div class="tick" style="transform: rotate(180deg);"></div>
+      <div class="tick" style="transform: rotate(210deg);"></div>
+      <div class="tick" style="transform: rotate(240deg);"></div>
+      <div class="tick" style="transform: rotate(270deg);"></div>
+      <div class="tick" style="transform: rotate(300deg);"></div>
+      <div class="tick" style="transform: rotate(330deg);"></div>
+      <div class="hand hour-hand" id="hour-hand"></div>
+      <div class="hand minute-hand" id="minute-hand"></div>
+      <div class="hand second-hand" id="second-hand"></div>
+      <div class="center-dot"></div>
+    </div>
+  </div>
+  <div class="controls">
+    <label for="time-slider">اختبار الوقت (ساعة:دقيقة)</label>
+    <input type="range" id="time-slider" min="0" max="1439" step="1">
+    <button id="reset-time">الآن</button>
+    <div class="time-display" id="time-display">13:24</div>
+  </div>
+  <footer>تصميم محمد محفوظ © 2025</footer>
+
+  <script>
+    const timeNames = [
+      { time: "00:00", name: "الفحمة" },
+      { time: "01:00", name: "الزُّلَّة" },
+      { time: "02:00", name: "الزُّلْفة" },
+      { time: "03:00", name: "البُهْرة" },
+      { time: "04:00", name: "السَّحَر" },
+      { time: "05:00", name: "الفَجْر" },
+      { time: "06:00", name: "الصُّبْح" },
+      { time: "07:00", name: "الصَّبَاح" },
+      { time: "08:00", name: "الشُّرُوق" },
+      { time: "09:00", name: "البُكُور" },
+      { time: "10:00", name: "الغُدْوة" },
+      { time: "11:00", name: "الضُّحَىٰ" },
+      { time: "12:00", name: "الهاجِرة" },
+      { time: "13:00", name: "الظَّهِيرة" },
+      { time: "14:00", name: "الرَّوَاح" },
+      { time: "15:00", name: "العَصْر" },
+      { time: "16:00", name: "القَصْر" },
+      { time: "17:00", name: "الأَصِيل" },
+      { time: "18:00", name: "العَشِيّ" },
+      { time: "19:00", name: "الغُرُوب" },
+      { time: "20:00", name: "الشَّفَق" },
+      { time: "21:00", name: "الغَسَق" },
+      { time: "22:00", name: "العَتَمة" },
+      { time: "23:00", name: "السُّدْفة" }
+    ];
+
+    let customTime = null;
+
+    function setupClockFace(isPM) {
+      const clockFace = document.getElementById('clock-face');
+      if (!clockFace) return;
+      clockFace.querySelectorAll('.number').forEach(el => el.remove());
+
+      const startHour = isPM ? 12 : 0;
+      const endHour = isPM ? 23 : 11;
+      const filteredTimes = timeNames.filter(t => {
+        const hour = parseInt(t.time.split(':')[0]);
+        return hour >= startHour && hour <= endHour;
+      });
+
+      filteredTimes.forEach(t => {
+        const hour = parseInt(t.time.split(':')[0]);
+        const position = isPM && hour >= 12 ? hour - 12 : hour;
+        const numberDiv = document.createElement('div');
+        numberDiv.className = `number number${position}`;
+        numberDiv.innerText = t.name;
+        clockFace.appendChild(numberDiv);
+      });
+    }
+
+    function setClock() {
+      const hourHand = document.getElementById('hour-hand');
+      const minuteHand = document.getElementById('minute-hand');
+      const secondHand = document.getElementById('second-hand');
+      const timeDisplay = document.getElementById('time-display');
+      if (!hourHand || !minuteHand || !secondHand || !timeDisplay) return;
+
+      let hours, minutes, seconds;
+      if (customTime !== null) {
+        hours = Math.floor(customTime / 60);
+        minutes = customTime % 60;
+        seconds = 0;
+      } else {
+        const now = new Date();
+        const utcOffset = 3 * 60 * 60 * 1000; // UTC+3
+        const utcTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60 * 1000) + utcOffset);
+        hours = utcTime.getHours();
+        minutes = utcTime.getMinutes();
+        seconds = utcTime.getSeconds();
+      }
+
+      timeDisplay.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+
+      const secondDeg = (seconds / 60) * 360 + 90;
+      const minuteDeg = (minutes / 60) * 360 + (seconds / 60) * 6 + 90;
+      const hourDeg = ((hours % 12) / 12) * 360 + (minutes / 60) * 30 + 90;
+
+      secondHand.style.transform = `rotate(${secondDeg}deg)`;
+      minuteHand.style.transform = `rotate(${minuteDeg}deg)`;
+      hourHand.style.transform = `rotate(${hourDeg}deg)`;
+
+      const isPM = hours >= 12;
+      const lastIsPM = document.body.dataset.isPM === 'true';
+      if (isPM !== lastIsPM) {
+        document.body.dataset.isPM = isPM;
+        setupClockFace(isPM);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const link = document.createElement('link');
+      link.href = 'https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap';
+      link.rel = 'stylesheet';
+      document.head.appendChild(link);
+
+      const timeSlider = document.getElementById('time-slider');
+      const resetButton = document.getElementById('reset-time');
+      const now = new Date();
+      const utcOffset = 3 * 60 * 60 * 1000;
+      const utcTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60 * 1000) + utcOffset);
+      timeSlider.value = utcTime.getHours() * 60 + utcTime.getMinutes();
+
+      timeSlider.addEventListener('input', () => {
+        customTime = parseInt(timeSlider.value);
+        setClock();
+      });
+
+      resetButton.addEventListener('click', () => {
+        customTime = null;
+        const now = new Date();
+        const utcTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60 * 1000) + utcOffset);
+        timeSlider.value = utcTime.getHours() * 60 + utcTime.getMinutes();
+        setClock();
+      });
+
+      document.body.dataset.isPM = utcTime.getHours() >= 12;
+      setupClockFace(document.body.dataset.isPM === 'true');
+      setClock();
+      setInterval(setClock, 1000);
+    });
+  </script>
+</body>
+</html>
